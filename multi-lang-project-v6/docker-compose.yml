@@ -1,0 +1,48 @@
+version: "3.9"
+services:
+  node_api:
+    build:
+      context: ./api
+      dockerfile: ../Dockerfile.node
+    ports:
+      - "3001:3001"
+    depends_on:
+      - python_api
+      - go_tool
+
+  python_api:
+    build:
+      context: ./backend
+      dockerfile: ../Dockerfile.python
+    ports:
+      - "8000:8000"
+
+  go_tool:
+    build:
+      context: ./go_tool
+      dockerfile: ../Dockerfile.go
+    command: ["./go_tool", "10", "20"]
+
+  c_project:
+    build:
+      context: ./c_project
+      dockerfile: ../Dockerfile.c
+
+  cpp_project:
+    build:
+      context: ./cpp_project
+      dockerfile: ../Dockerfile.cpp
+
+  csharp_project:
+    build:
+      context: ./csharp_project
+      dockerfile: ../Dockerfile.csharp
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - node_api
