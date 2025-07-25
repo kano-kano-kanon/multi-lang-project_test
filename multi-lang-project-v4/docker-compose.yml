@@ -1,0 +1,28 @@
+version: "3.9"
+services:
+  node_api:
+    build:
+      context: ./api
+      dockerfile: ../Dockerfile.node
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./engine/pkg:/usr/src/app/engine_pkg
+    depends_on:
+      - python_api
+
+  python_api:
+    build:
+      context: ./backend
+      dockerfile: ../Dockerfile.python
+    ports:
+      - "8000:8000"
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - node_api
